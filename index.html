@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RLD ENSEMBLE - Hybrid Music Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+            50% { transform: translate(50px, -50px) scale(1.5); opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .feature-badge {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-badge:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Albums Section */
+        .section {
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .album-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .album-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .album-cover {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            opacity: 0.9;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .album-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .album-tracks {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .album-description {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .track-list {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .track-list.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .track-list-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #667eea;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            color: #c0c0c0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .track-item:last-child {
+            border-bottom: none;
+        }
+
+        .track-number {
+            min-width: 30px;
+            color: #808080;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .track-artwork {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .track-artwork.img-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .track-artwork.img-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .track-artwork.img-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .track-artwork.img-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .track-artwork.img-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .track-artwork.img-6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .track-artwork.img-7 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .track-artwork.img-8 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .track-artwork.img-9 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .track-artwork.img-10 { background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%); }
+        .track-artwork.img-11 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        .track-artwork.img-12 { background: linear-gradient(135deg, #f77062 0%, #fe5196 100%); }
+        .track-artwork.img-13 { background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%); }
+        .track-artwork.img-14 { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); }
+        .track-artwork.img-15 { background: linear-gradient(135deg, #667eea 0%, #f5576c 100%); }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .track-lang {
+            font-size: 0.75rem;
+            color: #808080;
+            font-weight: 500;
+        }
+
+        .track-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .stream-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .stream-link:hover {
+            background: rgba(102, 126, 234, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .stream-link.spotify {
+            border-color: rgba(30, 215, 96, 0.3);
+            color: #1ed760;
+        }
+
+        .stream-link.spotify:hover {
+            background: rgba(30, 215, 96, 0.15);
+        }
+
+        .stream-link.youtube {
+            border-color: rgba(255, 0, 0, 0.3);
+            color: #ff0000;
+        }
+
+        .stream-link.youtube:hover {
+            background: rgba(255, 0, 0, 0.15);
+        }
+
+        .stream-link.amazon {
+            border-color: rgba(255, 153, 0, 0.3);
+            color: #ff9900;
+        }
+
+        .stream-link.amazon:hover {
+            background: rgba(255, 153, 0, 0.15);
+        }
+
+        /* Lyrics Section */
+        .lyrics-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .lyrics-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view-lyrics-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 16px;
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.25);
+            border-radius: 15px;
+            color: #667eea;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-lyrics-btn:hover {
+            background: rgba(102, 126, 234, 0.25);
+            transform: scale(1.05);
+        }
+
+        .lyrics-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .lyrics-tab {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lyrics-tab.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.4);
+            color: #667eea;
+        }
+
+        .lyrics-tab:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .lyrics-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.8;
+            white-space: pre-line;
+            color: #d0d0d0;
+            font-size: 0.9rem;
+        }
+
+        .lyrics-content.active {
+            display: block;
+        }
+
+        .lyrics-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+        }
+
+        .lyrics-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.5);
+        }
+
+        .view-tracks-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            color: #667eea;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-tracks-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            color: #c0c0c0;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .process-item {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .process-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .process-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .process-desc {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* Videos Section */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .video-desc {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .newsletter-input::placeholder {
+            color: #808080;
+        }
+
+        .newsletter-button {
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Donation Section */
+        .donation-section {
+            background: rgba(20, 20, 50, 0.6);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .donation-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .donation-divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #f5576c, #667eea);
+            margin: 0 auto 30px;
+        }
+
+        .donation-description {
+            color: #c0c0c0;
+            margin-bottom: 50px;
+            font-size: 1.15rem;
+        }
+
+        .donation-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .donation-card {
+            background: rgba(15, 15, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .donation-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(245, 87, 108, 0.5);
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.2);
+        }
+
+        .donation-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: rgba(245, 87, 108, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .donation-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .donation-label {
+            color: #b0b0b0;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .donate-btn {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: #808080;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .newsletter {
+                padding: 40px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles" id="particles"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">RLD ENSEMBLE</div>
+            <div class="tagline">Hybrid Music Experience</div>
+        </header>
+
+        <section class="hero">
+            <h1>Where Human Creativity Meets<br>Artificial Intelligence</h1>
+            <p class="subtitle">Explore a new dimension of music creation — blending human artistry, AI innovation, DAWs and samples across multiple genres and languages.</p>
+            
+            <div class="hero-features">
+                <div class="feature-badge">🎵 Hybrid Production</div>
+                <div class="feature-badge">🌍 Multi-Language</div>
+                <div class="feature-badge">🎹 Multiple Genres</div>
+                <div class="feature-badge">🎨 Original Compositions</div>
+            </div>
+
+            <a href="#albums" class="cta-button">Explore Our Music</a>
+        </section>
+
+        <section id="albums" class="section">
+            <h2 class="section-title">Available Albums</h2>
+            <div class="albums-grid">
+                <div class="album-card">
+                    <div class="album-cover">
+                        🍂
+                    </div>
+                    <div class="album-title">Assorted Minds</div>
+                    <div class="album-tracks">8 Tracks</div>
+                    <div class="album-description">A journey through diverse musical landscapes, exploring the complexity of human emotion and thought.</div>
+                    <button class="view-tracks-btn" onclick="toggleTracks('assorted-minds')">View Tracks ▼</button>
+                    <div class="track-list" id="assorted-minds">
+                        <div class="track-list-title">Track Listing</div>
+                        
+                        <div class="track-item">
+                            <span class="track-number">01</span>
+                            <div class="track-artwork img-1">🌙</div>
+                            <div class="track-info">
+                                <div class="track-name">And When We Were Sleeping</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">02</span>
+                            <div class="track-artwork img-6">🌦️</div>
+                            <div class="track-info">
+                                <div class="track-name">Inner Weather</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">03</span>
+                            <div class="track-artwork img-11">🗺️</div>
+                            <div class="track-info">
+                                <div class="track-name">Stranger in My Own Land</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                            <div class="track-links">
+                                <a href="https://open.spotify.com/track/0BW5QuavkksDbKEHix5aC4?si=894ab405e05d40ab" target="_blank" class="stream-link spotify">Spotify</a>
+                                <a href="https://youtu.be/9HdbXkc5qQY?si=7biuWyGocXJ8TpKE" target="_blank" class="stream-link youtube">YouTube</a>
+                                <a href="https://music.amazon.es/tracks/B0FYYW53ZH?marketplaceId=A1RKKUPIHCS9HS&musicTerritory=ES&ref=dm_sh_ecPU4Ar0eK3bn3T5vLO3AAmxd" target="_blank" class="stream-link amazon">Amazon</a>
+                            </div>
+                            <button class="view-lyrics-btn" onclick="toggleLyrics('stranger-lyrics')">View Lyrics 📝</button>
+                            <div class="lyrics-section" id="stranger-lyrics">
+                                <div class="lyrics-tabs">
+                                    <div class="lyrics-tab active" onclick="switchLyricsTab('stranger', 'original')">Original (ENG)</div>
+                                    <div class="lyrics-tab" onclick="switchLyricsTab('stranger', 'translation')">Traducción (SPA)</div>
+                                </div>
+                                <div class="lyrics-content active" id="stranger-original">There was a time I thought I'd found
+My destiny in foreign ground
+Friends who'd stay until the end
+Hearts that never would pretend
+But seasons changed and so did they
+Promises just fade away
+Left me standing in the rain
+With nothing but my own pain
+
+I'm a stranger in my own land
+Walking roads I'll never understand
+Searching for a place to call my home
+But I'm destined to walk alone
+In every town, in every face
+I'm looking for my rightful place
+But I'm a stranger in my own land
+With just my heart here in my hand
+
+I sailed away to distant shores
+Knocked on unfamiliar doors
+Thought that maybe this time round
+True belonging could be found
+But the pattern stayed the same
+Different faces, same old game
+Every smile that seemed so real
+Couldn't heal the way I feel
+
+I'm a stranger in my own land
+Walking roads I'll never understand
+Searching for a place to call my home
+But I'm destined to walk alone
+In every town, in every face
+I'm looking for my rightful place
+But I'm a stranger in my own land
+With just my heart here in my hand
+
+Then the silence spoke to me
+In the space between the waves
+Said the only family
+That my weary heart could save
+Was the one that knew my name
+Before I learned to walk away
+
+I'm no stranger to myself anymore
+Found the peace I was searching for
+Home was never in a distant place
+It was always in my family's embrace
+Now I know where I belong
+In the circle that's been there all along
+I'm no stranger to myself anymore
+My heart has found what it was looking for
+
+I belong to me
+And to those who'll always see
+The real me</div>
+                                <div class="lyrics-content" id="stranger-translation">Extraño en mi propia tierra
+
+Hubo un momento en el que pensé que había encontrado
+Mi destino en tierra extranjera
+Amigos que se quedarían hasta el final
+Corazones que nunca fingirían
+Pero las estaciones cambiaron y ellos también
+Las promesas simplemente se desvanecen
+Me dejó parado bajo la lluvia
+Con nada más que mi propio dolor
+
+Soy un extraño en mi propia tierra
+Caminar por caminos que nunca entenderé.
+Buscando un lugar al que llamar mi hogar
+Pero estoy destinado a caminar solo
+En cada ciudad, en cada cara
+Estoy buscando el lugar que me corresponde
+Pero soy un extraño en mi propia tierra
+Con solo mi corazón aquí en mi mano
+
+Navegué hacia costas lejanas
+Tocó puertas desconocidas
+Pensé que tal vez esta vez
+Se podía encontrar la verdadera pertenencia
+Pero el patrón se mantuvo igual
+Diferentes caras, el mismo juego de siempre
+Cada sonrisa que parecía tan real
+No pude sanar de la forma en que me siento
+
+Soy un extraño en mi propia tierra
+Caminar por caminos que nunca entenderé.
+Buscando un lugar al que llamar mi hogar
+Pero estoy destinado a caminar solo
+En cada ciudad, en cada cara
+Estoy buscando el lugar que me corresponde
+Pero soy un extraño en mi propia tierra
+Con solo mi corazón aquí en mi mano
+
+Entonces el silencio me habló
+En el espacio entre las olas
+Dijo la única familia
+Que mi corazón cansado podría salvar
+Era el que sabía mi nombre
+Antes de que aprendiera a alejarme
+
+Ya no soy ajeno a mí mismo
+Encontré la paz que estaba buscando
+El hogar nunca estuvo en un lugar lejano
+Siempre estuvo en el abrazo de mi familia
+Ahora sé a dónde pertenezco
+En el círculo que ha estado allí todo el tiempo.
+Ya no soy ajeno a mí mismo
+Mi corazón ha encontrado lo que buscaba
+
+Me pertenezco
+Y a los que siempre verán
+El verdadero yo</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">04</span>
+                            <div class="track-artwork img-7">🌺</div>
+                            <div class="track-info">
+                                <div class="track-name">Jardín de Gente</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                            <button class="view-lyrics-btn" onclick="toggleLyrics('jardin-lyrics')">View Lyrics 📝</button>
+                            <div class="lyrics-section" id="jardin-lyrics">
+                                <div class="lyrics-tabs">
+                                    <div class="lyrics-tab active" onclick="switchLyricsTab('jardin', 'original')">Original (SPA)</div>
+                                    <div class="lyrics-tab" onclick="switchLyricsTab('jardin', 'translation')">Translation (ENG)</div>
+                                </div>
+                                <div class="lyrics-content active" id="jardin-original">A estos hombres tristes...
+Bajan libros de la buena memoria, buena memoria
+Por las calles donde el tiempo
+Se desangra en cada historia
+Durazno sangrado en el club del cementerio
+Donde bailan las sombras del misterio
+Y yo camino entre las tumbas
+Buscando algo que no encuentro
+
+Jardín de gente, plegaria de un niño dormido
+Será que mi canción está llegando al sol
+O solo se pierde en el olvido
+
+Quedándote o yéndote
+Todas las hojas son del viento
+No hay forma de detener
+Este dolor que llevo dentro
+
+Muchacha ojos de miel
+Barro tal vez, raza por vos
+Tu mirada transparente
+Me atraviesa como una voz
+
+Jardín de gente y rezo por vos
+Plegaria de un niño dormido
+Será que mi canción está llegando al sol
+O se pierde en el olvido
+
+Los libros caen como lluvia
+Sobre estos hombres que no lloran
+La buena memoria se desvanece
+Cuando las horas se demoran
+Y en el club del cementerio
+Bailo solo esta canción
+Mientras el durazno sangra
+Sobre mi corazón</div>
+                                <div class="lyrics-content" id="jardin-translation">To these sad men...
+Books of good memory, good memory come down
+Through the streets where time
+Bleeds in every story
+Peach bleed in the cemetery club
+Where the shadows of mystery dance
+And I walk among the graves
+Looking for something I can't find
+
+Garden of people, prayer of a sleeping child
+Could it be that my song is reaching the sun
+Or it's just lost in oblivion
+
+Staying or leaving
+All the leaves are of the wind
+There's no way to stop
+This pain that I carry inside
+
+Girl with eyes of honey
+Mud maybe, race for you
+Your transparent gaze
+Pierces me like a voice
+
+Garden of people and I pray for you
+Prayer of a sleeping child
+Could it be that my song is reaching the sun
+Or is lost in oblivion
+
+Books fall like rain
+On these men who don't cry
+Good memory fades
+When the hours go by
+And in the cemetery club
+I dance alone this song
+While the peach bleeds
+On my heart</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">05</span>
+                            <div class="track-artwork img-14">✨</div>
+                            <div class="track-info">
+                                <div class="track-name">Teotlac Citlali</div>
+                                <div class="track-lang">NAHUATL</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">06</span>
+                            <div class="track-artwork img-3">💎</div>
+                            <div class="track-info">
+                                <div class="track-name">En los Cristales del Tiempo, Veo</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">07</span>
+                            <div class="track-artwork img-10">⚙️</div>
+                            <div class="track-info">
+                                <div class="track-name">Still Grinding</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                            <div class="track-links">
+                                <a href="https://open.spotify.com/track/1U8LjkQbNB8q1loTvA8fLX?si=dea2122fe0c44cdb" target="_blank" class="stream-link spotify">Spotify</a>
+                                <a href="https://www.youtube.com/watch?v=GlwyHo4TEAI&list=OLAK5uy_lw8EPQ7cfLRVJKenxRCESbZAHD8yTsl78" target="_blank" class="stream-link youtube">YouTube</a>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">08</span>
+                            <div class="track-artwork img-13">💃</div>
+                            <div class="track-info">
+                                <div class="track-name">Tango in Neon</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="album-card">
+                    <div class="album-cover">
+                        🌙
+                    </div>
+                    <div class="album-title">Keys</div>
+                    <div class="album-tracks">8 Tracks</div>
+                    <div class="album-description">Piano-driven compositions that unlock new sonic territories through hybrid production techniques.</div>
+                    <button class="view-tracks-btn" onclick="toggleTracks('keys')">View Tracks ▼</button>
+                    <div class="track-list" id="keys">
+                        <div class="track-list-title">Track Listing</div>
+                        
+                        <div class="track-item">
+                            <span class="track-number">01</span>
+                            <div class="track-artwork img-2">🎨</div>
+                            <div class="track-info">
+                                <div class="track-name">Caravan Color</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">02</span>
+                            <div class="track-artwork img-5">🔇</div>
+                            <div class="track-info">
+                                <div class="track-name">For the Silent Voice</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">03</span>
+                            <div class="track-artwork img-12">🌧️</div>
+                            <div class="track-info">
+                                <div class="track-name">Summer Rain Perfume</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">04</span>
+                            <div class="track-artwork img-8">🌍</div>
+                            <div class="track-info">
+                                <div class="track-name">Make Humans Great Again</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">05</span>
+                            <div class="track-artwork img-1">🍊</div>
+                            <div class="track-info">
+                                <div class="track-name">A Brilliant Shade of Orange</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                            <div class="track-links">
+                                <a href="https://open.spotify.com/track/1X5IrZXa8HWaNiFntQiwpC?si=c4f3311e65a04305" target="_blank" class="stream-link spotify">Spotify</a>
+                                <a href="https://music.amazon.es/albums/B0FVTGK37B?marketplaceId=A1RKKUPIHCS9HS&musicTerritory=ES&ref=dm_sh_FmpGDSPOSq1zYpewQ0Q3aqJMJ" target="_blank" class="stream-link amazon">Amazon</a>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">06</span>
+                            <div class="track-artwork img-9">⏳</div>
+                            <div class="track-info">
+                                <div class="track-name">Something Deeper from the Past</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">07</span>
+                            <div class="track-artwork img-4">⭐</div>
+                            <div class="track-info">
+                                <div class="track-name">Estrella de la Tarde</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">08</span>
+                            <div class="track-artwork img-15">🚶</div>
+                            <div class="track-info">
+                                <div class="track-name">Time to Walk Away</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="album-card">
+                    <div class="album-cover">
+                        ⏳
+                    </div>
+                    <div class="album-title">A Través de los Años</div>
+                    <div class="album-tracks">8 Tracks</div>
+                    <div class="album-description">Some multilingual compositions reflecting on time, memory, and transformation across the years.</div>
+                    <button class="view-tracks-btn" onclick="toggleTracks('atraves')">View Tracks ▼</button>
+                    <div class="track-list" id="atraves">
+                        <div class="track-list-title">Track Listing</div>
+                        
+                        <div class="track-item">
+                            <span class="track-number">01</span>
+                            <div class="track-artwork img-7">💔</div>
+                            <div class="track-info">
+                                <div class="track-name">Después del Dolor</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                            <div class="track-links">
+                                <a href="https://open.spotify.com/track/0yMx2cgvwNENp3uWAdullN?si=442fd8eef29c4e1b" target="_blank" class="stream-link spotify">Spotify</a>
+                                <a href="https://www.youtube.com/watch?v=VVcEJKV0NrA&list=OLAK5uy_kN2HhgvVtDqx9W_BqgADTPLqyC4IQrKd8&index=2" target="_blank" class="stream-link youtube">YouTube</a>
+                                <a href="https://music.amazon.es/tracks/B0FXRGGC7W?marketplaceId=A1RKKUPIHCS9HS&musicTerritory=ES&ref=dm_sh_76lS55buwDPgB38Eh6CkPrKXa" target="_blank" class="stream-link amazon">Amazon</a>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">02</span>
+                            <div class="track-artwork img-11">🩹</div>
+                            <div class="track-info">
+                                <div class="track-name">After the Pain</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                            <div class="track-links">
+                                <a href="https://open.spotify.com/track/1arcusPbpnDB5nwEdCeotm?si=7f6fee8347a84054" target="_blank" class="stream-link spotify">Spotify</a>
+                                <a href="https://www.youtube.com/watch?v=4DMq3aSWr2A&list=OLAK5uy_kN2HhgvVtDqx9W_BqgADTPLqyC4IQrKd8" target="_blank" class="stream-link youtube">YouTube</a>
+                                <a href="https://music.amazon.es/tracks/B0FXRGGC7W?marketplaceId=A1RKKUPIHCS9HS&musicTerritory=ES&ref=dm_sh_76lS55buwDPgB38Eh6CkPrKXa" target="_blank" class="stream-link amazon">Amazon</a>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">03</span>
+                            <div class="track-artwork img-4">⭐</div>
+                            <div class="track-info">
+                                <div class="track-name">Estrella de la Tarde</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">04</span>
+                            <div class="track-artwork img-3">💎</div>
+                            <div class="track-info">
+                                <div class="track-name">En los Cristales del Tiempo, Veo</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">05</span>
+                            <div class="track-artwork img-7">🌺</div>
+                            <div class="track-info">
+                                <div class="track-name">Jardín de Gente</div>
+                                <div class="track-lang">SPA</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">06</span>
+                            <div class="track-artwork img-14">✨</div>
+                            <div class="track-info">
+                                <div class="track-name">Teotlac Citlali</div>
+                                <div class="track-lang">NAHUATL</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">07</span>
+                            <div class="track-artwork img-2">🎨</div>
+                            <div class="track-info">
+                                <div class="track-name">Caravan Color</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+
+                        <div class="track-item">
+                            <span class="track-number">08</span>
+                            <div class="track-artwork img-13">💃</div>
+                            <div class="track-info">
+                                <div class="track-name">Tango in Neon</div>
+                                <div class="track-lang">ENG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">The Hybrid Approach</h2>
+            <div class="about-content">
+                <p>RLD ENSEMBLE represents a new paradigm in music creation, where human creativity directs and shapes the collaboration between traditional production tools and artificial intelligence.</p>
+                <p>Every track is crafted with intention, combining the warmth of DAWs, the texture of carefully selected samples, and the innovative possibilities of AI — all under human artistic direction.</p>
+                
+                <div class="process-grid">
+                    <div class="process-item">
+                        <div class="process-icon">🎼</div>
+                        <div class="process-title">Human Vision</div>
+                        <div class="process-desc">Original concepts and creative direction</div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-icon">🤖</div>
+                        <div class="process-title">AI Collaboration</div>
+                        <div class="process-desc">Expanding creative possibilities</div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-icon">🎚️</div>
+                        <div class="process-title">DAW Production</div>
+                        <div class="process-desc">Professional mixing and mastering</div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-icon">🎸</div>
+                        <div class="process-title">Sample Artistry</div>
+                        <div class="process-desc">Curated sounds and textures</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Latest Videos</h2>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">▶️</div>
+                    <div class="video-info">
+                        <div class="video-title">Behind the Scenes: Creating with AI</div>
+                        <div class="video-desc">Explore the hybrid production process</div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">🎵</div>
+                    <div class="video-info">
+                        <div class="video-title">Lyric Videos Collection</div>
+                        <div class="video-desc">Visual experiences for our compositions</div>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-thumbnail">🎭</div>
+                    <div class="video-info">
+                        <div class="video-title">Live Performance Highlights</div>
+                        <div class="video-desc">Experience our music in motion</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="donation-section">
+            <h2>Apoya Nuestra Música</h2>
+            <div class="donation-divider"></div>
+            <p class="donation-description">Tu apoyo nos ayuda a continuar creando música innovadora. ¡Invítanos a un café o un lunch!</p>
+            
+            <div class="donation-options">
+                <div class="donation-card">
+                    <div class="donation-icon">☕</div>
+                    <div class="donation-amount">$1.25</div>
+                    <div class="donation-label">Un café</div>
+                    <a href="https://www.paypal.com/paypalme/yourpaypal?amount=1.25" target="_blank" class="donate-btn">Donar</a>
+                </div>
+
+                <div class="donation-card">
+                    <div class="donation-icon">🍪</div>
+                    <div class="donation-amount">$3.00</div>
+                    <div class="donation-label">Un snack</div>
+                    <a href="https://www.paypal.com/paypalme/yourpaypal?amount=3.00" target="_blank" class="donate-btn">Donar</a>
+                </div>
+
+                <div class="donation-card">
+                    <div class="donation-icon">🍽️</div>
+                    <div class="donation-amount">$5.00</div>
+                    <div class="donation-label">Un lunch</div>
+                    <a href="https://www.paypal.com/paypalme/yourpaypal?amount=5.00" target="_blank" class="donate-btn">Donar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="newsletter">
+            <h2>Stay Updated</h2>
+            <p>Get notified about new releases, videos, and exclusive content</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing! (This is a demo form)');">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+
+        <footer>
+            <div class="social-links">
+                <a href="#" class="social-link" title="Spotify">🎵</a>
+                <a href="#" class="social-link" title="YouTube">▶️</a>
+                <a href="#" class="social-link" title="Bandcamp">🎼</a>
+                <a href="#" class="social-link" title="Instagram">📸</a>
+                <a href="#" class="social-link" title="SoundCloud">☁️</a>
+            </div>
+            <div class="copyright">
+                © 2025 RLD ENSEMBLE • Represented by RD ENSEMBLE • All Rights Reserved
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle track list visibility
+        function toggleTracks(albumId) {
+            const trackList = document.getElementById(albumId);
+            const button = event.target;
+            
+            trackList.classList.toggle('active');
+            
+            if (trackList.classList.contains('active')) {
+                button.textContent = 'Hide Tracks ▲';
+            } else {
+                button.textContent = 'View Tracks ▼';
+            }
+        }
+
+        // Toggle lyrics visibility
+        function toggleLyrics(lyricsId) {
+            const lyricsSection = document.getElementById(lyricsId);
+            const button = event.target;
+            
+            lyricsSection.classList.toggle('active');
+            
+            if (lyricsSection.classList.contains('active')) {
+                button.textContent = 'Hide Lyrics ▲';
+            } else {
+                button.textContent = 'View Lyrics 📝';
+            }
+        }
+
+        // Switch between original and translation lyrics
+        function switchLyricsTab(songId, tab) {
+            const originalContent = document.getElementById(songId + '-original');
+            const translationContent = document.getElementById(songId + '-translation');
+            const tabs = event.target.parentElement.children;
+            
+            // Remove active class from all tabs
+            Array.from(tabs).forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Show/hide content
+            if (tab === 'original') {
+                originalContent.classList.add('active');
+                translationContent.classList.remove('active');
+            } else {
+                originalContent.classList.remove('active');
+                translationContent.classList.add('active');
+            }
+        }
+
+        // Create animated particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
